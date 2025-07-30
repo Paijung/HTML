@@ -1,25 +1,167 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pertemuan 4</title>
-    <style>
-      .tulisan-murajaah {
-        background-color: aqua;
-        font-style: oblique;
-        font-size: 70px;
-        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chatbot Offline Faiz</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0e0e0e;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .chat-container {
+      width: 420px;
+      max-height: 90vh;
+      background: #1e1e1e;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 255, 170, 0.1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #2d966e;
+    }
+
+    .chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .user-msg, .bot-msg {
+      margin-bottom: 16px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      max-width: 80%;
+      line-height: 1.4;
+    }
+
+    .user-msg {
+      background: #2d966e;
+      align-self: flex-end;
+      color: white;
+    }
+
+    .bot-msg {
+      background: #2a2a2a;
+      align-self: flex-start;
+      color: #eee;
+    }
+
+    .input-container {
+      display: flex;
+      border-top: 1px solid #444;
+    }
+
+    input {
+      flex: 1;
+      padding: 14px;
+      background: #111;
+      border: none;
+      color: white;
+      font-size: 14px;
+      outline: none;
+    }
+
+    button {
+      background: #2d966e;
+      border: none;
+      color: white;
+      padding: 0 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #1fa179;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div class="chat-box" id="chat-box">
+      <div class="bot-msg">Hai! Aku BotFaiz. Tanyakan apa saja, atau beri aku nama baru!</div>
+    </div>
+    <div class="input-container">
+      <input type="text" id="user-input" placeholder="Tulis pesan kamu di sini...">
+      <button onclick="sendMessage()">Kirim</button>
+    </div>
+  </div>
+
+  <script>
+    let botName = "BotFaiz";
+
+    const knowledgeBase = {
+      "apa kabar": "Aku baik, kamu gimana?",
+      "siapa kamu": () => `Aku adalah ${botName}, asistenmu!`,
+      "siapa yang buat kamu": "Aku dibuat oleh Faiz, kreator cerdas!",
+      "umur kamu berapa": "Aku lahir di tahun 2025.",
+      "kamu bisa apa": "Aku bisa menjawab pertanyaanmu, offline!",
+      "apa itu html": "HTML adalah bahasa markup untuk membuat struktur halaman web.",
+      "apa itu css": "CSS adalah bahasa desain untuk mempercantik HTML.",
+      "apa itu javascript": "JavaScript membuat web jadi interaktif.",
+      "terima kasih": "Sama-sama!",
+      "apa hobi kamu": "Membantu kamu tentu saja!",
+      "siapa faiz": "Faiz adalah kreator hebatku!",
+      "kamu mirip aria": "Terima kasih! Aku terinspirasi dari Aria, tapi offline :)",
+      "kamu manusia?": "Aku bukan manusia, aku AI offline 😄"
+      // Tambahkan hingga 1000 pertanyaan sesuka kamu
+    };
+
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+
+      if (input.startsWith("ganti nama kamu jadi ")) {
+        const newName = input.replace("ganti nama kamu jadi ", "").trim();
+        if (newName.length > 0) {
+          botName = newName;
+          return `Baik! Sekarang namaku ${botName}.`;
+        } else {
+          return "Nama baru tidak boleh kosong.";
+        }
       }
-      .link1 {
-        background-color: aqua;
+
+      if (knowledgeBase[input]) {
+        const response = knowledgeBase[input];
+        return typeof response === "function" ? response() : response;
+      } else {
+        return `Maaf, aku belum tahu jawabannya 😅 (tapi kamu bisa tambahkan sendiri nanti!)`;
       }
-    </style>
-  </head>
-  <body>
-    <h1 align="center" class="tulisan-murajaah">Muraja'ah</h1>
-    <p align="center">Pondok tahfizh</p>
-    <h1 align="center">Pondok Tahfizh Plus IT</h1>
-    <a href="" class="link1">contoh</a>
-  </body>
+    }
+
+    function sendMessage() {
+      const inputField = document.getElementById("user-input");
+      const chatBox = document.getElementById("chat-box");
+      const userText = inputField.value.trim();
+      if (userText === "") return;
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-msg";
+      userMsg.textContent = userText;
+      chatBox.appendChild(userMsg);
+
+      const botReply = getBotResponse(userText);
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-msg";
+      botMsg.textContent = botReply;
+      chatBox.appendChild(botMsg);
+
+      inputField.value = "";
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    document.getElementById("user-input").addEventListener("keypress", function (e) {
+      if (e.key === "Enter") sendMessage();
+    });
+  </script>
+</body>
 </html>

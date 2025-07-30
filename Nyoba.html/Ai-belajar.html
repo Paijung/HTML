@@ -2,158 +2,145 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BotFaiz AI Modern</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>Asisten Cerdas Faiz</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(145deg, #0f0f0f, #1e1e1e);
+      background: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: white;
     }
 
     .chat-container {
-      width: 390px;
-      max-width: 95vw;
-      height: 90vh;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
+      width: 450px;
+      max-height: 90vh;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
     }
 
     .chat-box {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      scroll-behavior: smooth;
     }
 
     .user-msg, .bot-msg {
-      max-width: 75%;
+      margin-bottom: 14px;
       padding: 12px 16px;
-      border-radius: 18px;
-      font-size: 14px;
-      line-height: 1.4;
-      word-wrap: break-word;
-      animation: fadeIn 0.3s ease;
+      border-radius: 12px;
+      max-width: 85%;
     }
 
     .user-msg {
+      background-color: #2d966e;
+      color: #fff;
       align-self: flex-end;
-      background: #2d966e;
-      color: white;
-      border-bottom-right-radius: 4px;
     }
 
     .bot-msg {
+      background-color: #f0f0f0;
+      color: #333;
       align-self: flex-start;
-      background: rgba(255, 255, 255, 0.08);
-      color: #ddd;
-      border-bottom-left-radius: 4px;
     }
 
     .input-container {
       display: flex;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(255, 255, 255, 0.03);
+      border-top: 1px solid #ccc;
     }
 
     input {
       flex: 1;
-      background: transparent;
+      padding: 14px;
       border: none;
-      padding: 16px;
-      color: white;
       font-size: 14px;
       outline: none;
     }
 
     button {
       background: #2d966e;
-      border: none;
       color: white;
-      font-weight: 600;
+      border: none;
       padding: 0 20px;
       cursor: pointer;
-      transition: background 0.2s ease;
     }
 
     button:hover {
-      background: #237156;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+      background: #1f7a56;
     }
   </style>
 </head>
 <body>
   <div class="chat-container">
     <div class="chat-box" id="chat-box">
-      <div class="bot-msg">🤖 Halo! Aku BotFaiz. Tanyakan apa saja!</div>
+      <div class="bot-msg">Halo, saya Asisten Cerdas. Silakan ajukan pertanyaan formal Anda.</div>
     </div>
     <div class="input-container">
-      <input type="text" id="user-input" placeholder="Tulis pertanyaan...">
+      <input type="text" id="user-input" placeholder="Tulis pertanyaan formal...">
       <button onclick="sendMessage()">Kirim</button>
     </div>
   </div>
 
   <script>
-    const apiKey = "YOUR_API_KEY"; // Ganti dengan API Key OpenAI kamu
+    let botName = "Asisten Cerdas";
 
-    async function getChatGPTResponse(message) {
-      const res = await fetch("https://api.openai.com/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: message }]
-        })
-      });
+    const knowledgeBase = {
+      "apa itu internet": "Internet adalah jaringan komunikasi global yang menghubungkan jutaan perangkat di seluruh dunia untuk berbagi informasi.",
+      "apa manfaat teknologi": "Teknologi memberikan kemudahan dalam komunikasi, efisiensi dalam pekerjaan, dan akses informasi secara cepat.",
+      "apa dampak negatif media sosial": "Dampak negatif media sosial dapat mencakup kecanduan, penyebaran hoaks, hingga gangguan kesehatan mental.",
+      "apa itu pendidikan": "Pendidikan adalah proses pembelajaran untuk mengembangkan potensi diri, karakter, serta pengetahuan seseorang.",
+      "apa itu etika digital": "Etika digital adalah tata krama dan norma yang harus dipatuhi saat menggunakan teknologi dan internet secara bijak.",
+      "siapa pencipta internet": "Internet dikembangkan oleh banyak ilmuwan, namun salah satu tokoh pentingnya adalah Tim Berners-Lee, pencipta World Wide Web.",
+      "apa itu komunikasi": "Komunikasi adalah proses penyampaian pesan dari satu pihak ke pihak lain melalui berbagai media, baik verbal maupun non-verbal.",
+      "bagaimana cara belajar efektif": "Belajar efektif melibatkan perencanaan waktu, konsentrasi, pemahaman konsep, serta praktik berulang.",
+      "apa itu chatbot": "Chatbot adalah program komputer yang dirancang untuk mensimulasikan percakapan layaknya manusia, biasanya digunakan di website dan aplikasi.",
+      "apa itu literasi digital": "Literasi digital adalah kemampuan untuk menggunakan teknologi informasi secara bijak, aman, dan bertanggung jawab."
+    };
 
-      const data = await res.json();
-      return data.choices[0].message.content;
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+
+      if (input.startsWith("ganti nama kamu jadi ")) {
+        const newName = input.replace("ganti nama kamu jadi ", "").trim();
+        if (newName.length > 0) {
+          botName = newName;
+          return `Baik, mulai sekarang nama saya adalah ${botName}.`;
+        } else {
+          return "Mohon berikan nama baru yang valid.";
+        }
+      }
+
+      if (knowledgeBase[input]) {
+        return knowledgeBase[input];
+      } else {
+        return "Mohon maaf, saya belum memiliki jawaban untuk pertanyaan tersebut.";
+      }
     }
 
-    async function sendMessage() {
+    function sendMessage() {
       const inputField = document.getElementById("user-input");
       const chatBox = document.getElementById("chat-box");
       const userText = inputField.value.trim();
-
       if (userText === "") return;
 
-      chatBox.innerHTML += `<div class="user-msg">Kamu: ${userText}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
+      const userMsg = document.createElement("div");
+      userMsg.className = "user-msg";
+      userMsg.textContent = userText;
+      chatBox.appendChild(userMsg);
+
+      const botReply = getBotResponse(userText);
+      const botMsg = document.createElement("div");
+      botMsg.className = "bot-msg";
+      botMsg.textContent = botReply;
+      chatBox.appendChild(botMsg);
+
       inputField.value = "";
-
-      chatBox.innerHTML += `<div class="bot-msg">Bot: <em>Mengetik...</em></div>`;
       chatBox.scrollTop = chatBox.scrollHeight;
-
-      try {
-        const botReply = await getChatGPTResponse(userText);
-        const botMsgs = document.getElementsByClassName("bot-msg");
-        botMsgs[botMsgs.length - 1].innerHTML = `Bot: ${botReply}`;
-        chatBox.scrollTop = chatBox.scrollHeight;
-      } catch (error) {
-        chatBox.innerHTML += `<div class="bot-msg">Bot: ❌ Maaf, terjadi kesalahan.</div>`;
-      }
     }
 
     document.getElementById("user-input").addEventListener("keypress", function (e) {
