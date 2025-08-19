@@ -1,0 +1,58 @@
+header {
+    background-color: bisque;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: -10px;
+    margin-bottom: 10px;
+    padding: 25px;
+}
+img {
+    width: 50px;
+    display: flex;
+    cursor: pointer;
+}
+.nav1 {
+    display: flex;
+}
+.nav2 {
+    display: flex;
+    margin-left: 10px;
+}
+.linkmenu {
+    color: black;
+    text-transform: capitalize;
+    font-family: system-ui;
+    font-size: 15px;
+    text-decoration: none;
+}
+.linkmenu:hover {
+    color: crimson;
+}
+h1 {
+    font-family: system-ui;
+    color: crimson;
+}
+h2 {
+    font-family: system-ui;
+    color: brown;
+}
+p {
+    font-family: system-ui;
+}
+i {
+    color: crimson;
+}
+main {
+    background-color: bisque;
+    border-radius: 20px;
+    margin: 10px 50px;
+    padding: 50px;
+}
+footer {
+    background-color: bisque;
+    border-radius: 20px;
+    margin: 10px 50px;
+    font-family: system-ui;
+    padding: 10px;
+}
