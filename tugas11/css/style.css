@@ -1,0 +1,53 @@
+* {
+  padding: 0;
+  margin: 0;
+  font-family: poppins;
+}
+a {
+  color: #32585f;
+  text-decoration: none;
+}
+header a:hover {
+  transition: all 0.3s ease;
+  color: white;
+}
+div a:hover {
+    transition: all 0.3s ease;
+    color: black;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 25px;
+  background-color: #549daa;
+}
+header img {
+  width: 75px;
+}
+header div {
+  display: inline-flex;
+  align-items: center;
+}
+nav {
+  display: inline-flex;
+  align-items: center;
+}
+header li {
+  display: inline-flex;
+}
+main h1 {
+  padding: 100px;
+  font-size: 75px;
+}
+.informasi {
+  padding: 100px 400px;
+}
+main img {
+  width: 200px;
+  text-align: center;
+}
+footer {
+    padding: 25px;
+    background-color: #549daa;
+    text-align: center;
+}
